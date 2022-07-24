@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour {
     
+    public List<Card> deck = new List<Card>();
+
     void Start() {
         List<int> player1cards = new List<int>{ConvertCardToInteger("6"), ConvertCardToInteger("11")};
         List<int> player2cards = new List<int>{ConvertCardToInteger("9"), ConvertCardToInteger("3")};
