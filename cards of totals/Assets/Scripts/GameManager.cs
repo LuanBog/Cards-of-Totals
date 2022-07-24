@@ -5,14 +5,17 @@ using UnityEngine;
 public class GameManager : MonoBehaviour {
     
     public List<Card> deck = new List<Card>();
+    public Transform cardSlotsParent;
 
     void Start() {
-        List<int> player1cards = new List<int>{ConvertCardToInteger("6"), ConvertCardToInteger("11")};
-        List<int> player2cards = new List<int>{ConvertCardToInteger("9"), ConvertCardToInteger("3")};
+        // List<int> player1cards = new List<int>{ConvertCardToInteger("6"), ConvertCardToInteger("11")};
+        // List<int> player2cards = new List<int>{ConvertCardToInteger("9"), ConvertCardToInteger("3")};
 
-        Dictionary<string, dynamic> winner = DetermineWinner(player1cards, player2cards);
+        // Dictionary<string, dynamic> winner = DetermineWinner(player1cards, player2cards);
+        // Debug.Log(winner["player-won"]);
 
-        Debug.Log(winner["player-won"]);
+        ShuffleDeck();
+        PutToPile();
     }
 
     int ConvertCardToInteger(string card) {
@@ -59,6 +62,30 @@ public class GameManager : MonoBehaviour {
             result["player-won"] = "tie";
 
         return result;
+    }
+
+    void ShuffleDeck() {
+        Card tempCard;
+
+        for (int i = 0; i < deck.Count; i++) {
+            int random = Random.Range(0, deck.Count);
+
+            tempCard = deck[random];
+            deck[random] = deck[i];
+            deck[i] = tempCard;
+        }
+    }
+
+    void PutToPile() {
+        for (int i = 0; i < cardSlotsParent.childCount; i++) {
+            Transform cardSlot = cardSlotsParent.GetChild(i);
+            Card card = deck[i];
+
+            card.transform.position = cardSlot.position;
+            card.hidden = true;
+            card.GetComponent<SpriteRenderer>().sortingOrder = i;
+            card.gameObject.SetActive(true);
+        }
     }
 
 }
